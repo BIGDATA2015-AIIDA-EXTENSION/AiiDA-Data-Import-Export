@@ -1,0 +1,1 @@
+{ "_id" : { "$oid" : "550591f8b08fcd225c466285" }, "user" : "martin", "pwd" : "f1fc80e570821ade15170f665b102a6a", "roles" : [ "readWrite" ] }
