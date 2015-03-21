@@ -1,0 +1,263 @@
+
+<HTML>
+  <HEAD>
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/LaTeX", "output/HTML-CSS"],
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+    </script>
+
+    <script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+
+
+    <style>
+      body
+      {
+      max-width : 1000px;
+      margin : auto;
+      margin-top : 20px;
+      font: 14px/21px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-align : justify
+      }
+
+      h1.title {font-size : 1.6em}
+
+      h1 {font-size : 1.4em}
+
+      h2 {font-size : 1.2em}
+
+      h3 {font-size : 1.1em}
+
+      h1, h2, h3, h4, h5, h6
+      {
+      color : maroon;
+      }
+
+      .highlight
+      {
+      border-style:solid;
+      border-width : 1px;
+      border-color : gray;
+      padding-left : 5px;
+      }
+
+      a
+      {
+      color : maroon;
+      }
+
+      .footer
+      {
+      font-size : smaller;
+      color : gray;
+      text-align : right;
+      }
+
+      .hll { background-color: #ffffcc }
+.c { color: #408080; font-style: italic } /* Comment */
+.err { border: 1px solid #FF0000 } /* Error */
+.k { color: #008000; font-weight: bold } /* Keyword */
+.o { color: #666666 } /* Operator */
+.cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.cp { color: #BC7A00 } /* Comment.Preproc */
+.c1 { color: #408080; font-style: italic } /* Comment.Single */
+.cs { color: #408080; font-style: italic } /* Comment.Special */
+.gd { color: #A00000 } /* Generic.Deleted */
+.ge { font-style: italic } /* Generic.Emph */
+.gr { color: #FF0000 } /* Generic.Error */
+.gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.gi { color: #00A000 } /* Generic.Inserted */
+.go { color: #888888 } /* Generic.Output */
+.gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.gs { font-weight: bold } /* Generic.Strong */
+.gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.gt { color: #0044DD } /* Generic.Traceback */
+.kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.kp { color: #008000 } /* Keyword.Pseudo */
+.kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.kt { color: #B00040 } /* Keyword.Type */
+.m { color: #666666 } /* Literal.Number */
+.s { color: #BA2121 } /* Literal.String */
+.na { color: #7D9029 } /* Name.Attribute */
+.nb { color: #008000 } /* Name.Builtin */
+.nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.no { color: #880000 } /* Name.Constant */
+.nd { color: #AA22FF } /* Name.Decorator */
+.ni { color: #999999; font-weight: bold } /* Name.Entity */
+.ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.nf { color: #0000FF } /* Name.Function */
+.nl { color: #A0A000 } /* Name.Label */
+.nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.nt { color: #008000; font-weight: bold } /* Name.Tag */
+.nv { color: #19177C } /* Name.Variable */
+.ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.w { color: #bbbbbb } /* Text.Whitespace */
+.mf { color: #666666 } /* Literal.Number.Float */
+.mh { color: #666666 } /* Literal.Number.Hex */
+.mi { color: #666666 } /* Literal.Number.Integer */
+.mo { color: #666666 } /* Literal.Number.Oct */
+.sb { color: #BA2121 } /* Literal.String.Backtick */
+.sc { color: #BA2121 } /* Literal.String.Char */
+.sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.s2 { color: #BA2121 } /* Literal.String.Double */
+.se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.sh { color: #BA2121 } /* Literal.String.Heredoc */
+.si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.sx { color: #008000 } /* Literal.String.Other */
+.sr { color: #BB6688 } /* Literal.String.Regex */
+.s1 { color: #BA2121 } /* Literal.String.Single */
+.ss { color: #19177C } /* Literal.String.Symbol */
+.bp { color: #008000 } /* Name.Builtin.Pseudo */
+.vc { color: #19177C } /* Name.Variable.Class */
+.vg { color: #19177C } /* Name.Variable.Global */
+.vi { color: #19177C } /* Name.Variable.Instance */
+.il { color: #666666 } /* Literal.Number.Integer.Long */
+
+    </style>
+  </HEAD>
+  <BODY>
+<H1 class = "title"> Draft of a script importing json documents from mongodb json to HBase</H1>
+
+<p><strong>Author:</strong>  Artur Skonecki <BR/>
+<strong>Date:</strong>  21.04.2015 <BR/></p>
+<h1>Intro</h1>
+<p>install Pweave to generate docs: 
+pypublish -f pdf import_json.py</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.debugger</span> <span class="kn">import</span> <span class="n">Tracer</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+</pre></div>
+
+<p>HBase does not allow all characters for keys so 
+only_std_chars leaves only desired chars</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">only_std_chars</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">string</span> <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">isalnum</span><span class="p">()</span> <span class="ow">or</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;_&#39;</span><span class="p">]))</span>
+</pre></div>
+
+<p>Converts json documents to hbase format.
+Hbase does not support nested structures, so ZONK for mongodb documents.
+This function deals with it by using hbase 'families'.
+Each hbase table can have multiple families.
+So the hacky way to readd structures from nested documents is to add
+nested structures that have 'nested' family names'.
+E.g. Lets take table named <em>'hulls'</em>. Inside there are entries with different family names: 
+<em>family name <strong>'hulls'</strong> for root level entries</em>
+hulls  has subfield <em>'params_id'</em> which is a dict
+This subfield cannot be nested so another family is created
+<em>named <strong>'hulls_param_id'</strong> to be referenced from the entry in the root</em></p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">basefamily</span><span class="p">):</span>
+    <span class="n">families</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">d</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">families</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">basefamily</span><span class="p">)</span>
+    <span class="c">#print(&#39;Family:&#39; + str(basefamily))</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">j</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">==</span> <span class="nb">type</span><span class="p">({}):</span>
+            <span class="c">#print &#39;convert DICT &#39; + k</span>
+            <span class="c">#Tracer()()</span>
+            <span class="n">d2</span><span class="p">,</span> <span class="n">families2</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span>
+                    <span class="n">v</span><span class="p">,</span>
+                    <span class="p">{</span>
+                        <span class="n">basefamily</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;_&#39;</span><span class="o">+</span><span class="n">only_std_chars</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="p">:</span> <span class="nb">dict</span><span class="p">()</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+            <span class="n">families</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">families2</span><span class="p">)</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">basefamily</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="n">only_std_chars</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="s">&#39;DICT_REFERENCE_TODO&#39;</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">([]):</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">basefamily</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="n">only_std_chars</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="s">&#39;LIST_REFERENCE_NOT_IMPL&#39;</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">basefamily</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="n">only_std_chars</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">families</span>
+</pre></div>
+
+<p>Src json with mongodb collection.</p>
+<div class="highlight"><pre><span class="n">src_name</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+<p>Target table in hbase.</p>
+<div class="highlight"><pre><span class="n">table_name</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">src_name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span> 
+
+<span class="k">print</span> <span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">happybase</span>
+
+
+<span class="c">#jT={u&#39;ns&#39;: u&#39;lj.params&#39;, u&#39;name&#39;: u&#39;_id_&#39;}</span>
+</pre></div>
+<div class="highlight"><pre>import_json.py
+</pre></div>
+
+<p>Open source file and read the first json document
+to determine families for created table.
+It is not easy to add families to a table later.</p>
+<div class="highlight"><pre><span class="n">families</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;smallexport/&#39;</span> <span class="o">+</span> <span class="n">src_name</span> <span class="o">+</span> <span class="s">&#39;.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>    
+    <span class="n">rowid</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">family_name</span> <span class="o">=</span> <span class="n">src_name</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">jn</span><span class="p">,</span> <span class="n">fam</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="p">{</span><span class="n">family_name</span> <span class="p">:</span><span class="nb">dict</span><span class="p">()})</span>
+        <span class="n">families</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fam</span><span class="p">)</span>
+        <span class="k">break</span> <span class="c"># read just a single line to get families</span>
+
+<span class="k">print</span> <span class="p">(</span><span class="s">&#39;FAMILIES&#39;</span><span class="p">);</span> <span class="k">print</span> <span class="p">(</span><span class="n">families</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre>&lt;type &#39;exceptions.IOError&#39;&gt;
+[Errno 2] No such file or directory: &#39;smallexport/-fhtml.json&#39;
+</pre></div>
+
+<p>Connect with target hbase instance.</p>
+<div class="highlight"><pre><span class="n">connection</span> <span class="o">=</span> <span class="n">happybase</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="s">&#39;hbase-docker&#39;</span><span class="p">,</span> <span class="mi">9090</span><span class="p">)</span>
+</pre></div>
+
+<p>Create table, display tables, get table handle.</p>
+<div class="highlight"><pre><span class="n">connection</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">families</span> <span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre>&lt;type &#39;exceptions.ValueError&#39;&gt;
+Cannot create table &#39;import_json.py&#39; (no column families specified)
+</pre></div>
+
+<p>Read all json documents from the file and convert them to hbase accepted format.
+Insert generated entries into opened hbase table.</p>
+<div class="highlight"><pre><span class="n">data</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;smallexport/&#39;</span><span class="o">+</span><span class="n">src_name</span><span class="o">+</span><span class="s">&#39;.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>    
+    <span class="n">rowid</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="n">family_name</span> <span class="o">=</span> <span class="n">src_name</span>
+        <span class="c">#Tracer()()</span>
+        <span class="n">jn</span><span class="p">,</span> <span class="n">families</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="p">{</span><span class="n">family_name</span> <span class="p">:</span><span class="nb">dict</span><span class="p">()})</span>
+        <span class="c">#print j,jn</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rowid</span><span class="p">),</span> <span class="n">jn</span><span class="p">)</span>
+        <span class="n">rowid</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">scan</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">data</span>
+</pre></div>
+<div class="highlight"><pre>&lt;type &#39;exceptions.SyntaxError&#39;&gt;
+invalid syntax (chunk, line 16)
+</pre></div>
+
+    <HR/>
+    <div class="footer">
+      <p>Published from <a href="import_json.py">import_json.py</a>
+    using <a href="http://mpastell.com/pweave">Pweave</a> 0.23
+    on 21-03-2015.<p></div>
+  </BODY>
+</HTML>
