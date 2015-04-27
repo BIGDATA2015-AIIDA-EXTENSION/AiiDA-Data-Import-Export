@@ -28,10 +28,9 @@ DataFactory = aiida.orm.DataFactory
 SD=DataFactory('structure')
 q=SD.query()
 
-
-def write_json_structure(outfile, structure):
-        json.dump({"cell": structure.cell,"pbc": structure.pbc,"sites": [x.get_raw() for x in e.sites]}, outfile, indent=4)
-
 with open("text.json", "w+") as outfile:
-    for e in q:
-        write_json_structure(outfile, e)
+    j=json.JSONEncoder()
+    for structure in q:
+        outfile.write(j.encode({"uuid": structure.uuid, "cell": structure.cell, "cell_volume": structure.get_cell_volume(), "pbc": structure.pbc,"sites": [x.get_raw() for x in e.sites]})+"\n")
+
+
