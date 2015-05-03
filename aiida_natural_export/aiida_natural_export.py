@@ -28,9 +28,28 @@ DataFactory = aiida.orm.DataFactory
 SD=DataFactory('structure')
 q=SD.query()
 
-with open("text.json", "w+") as outfile:
+
+with open("text.json", "w") as outfile:
     j=json.JSONEncoder()
     for structure in q:
-        outfile.write(j.encode({"uuid": structure.uuid, "cell": structure.cell, "cell_volume": structure.get_cell_volume(), "pbc": structure.pbc,"sites": [x.get_raw() for x in e.sites]})+"\n")
+        sites = []
+        for x in structure.sites:
+            d=x.get_raw() #position kind_name
+            d['properties'] = { 
+                'mass': structure.get_kind(d['kind_name']).get_raw()['mass'],
+                'weights' : structure.get_kind(d['kind_name']).get_raw()['weights'] }
+            sites.append(d)
+
+        outfile.write(j.encode({
+            "uuid": structure.uuid, 
+            "cell": structure.cell,
+            "cell_angles": structure.cell_angles,
+            "cell_lengths": structure.cell_lengths,
+            "cell_volume": structure.get_cell_volume(),
+            "pbc": structure.pbc,
+            "sites": sites
+            }) +"\n")
+
+
 
 
